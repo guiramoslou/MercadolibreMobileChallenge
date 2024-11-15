@@ -30,6 +30,7 @@ class SearchViewModel: SearchViewModelProtocol {
                     self?.searchResults = success.results
                     self?.delegate?.didGetSucessfulSearchResults()
                 case .failure(let failure):
+                    debugPrint(failure)
                     self?.delegate?.didGetError()
                 }
             }

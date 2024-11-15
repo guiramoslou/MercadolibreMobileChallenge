@@ -18,4 +18,10 @@ struct Item: Decodable {
     let title: String
     let thumbnail: URL
     let price: Double
+    let attributes: [Attribute]?
+}
+
+struct Attribute: Decodable {
+    let name: String?
+    let value_name: String?
 }

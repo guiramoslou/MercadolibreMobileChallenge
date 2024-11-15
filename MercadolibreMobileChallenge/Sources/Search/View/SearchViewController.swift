@@ -13,6 +13,7 @@ class SearchViewController: UIViewController {
     private let viewModel = SearchViewModel() // TODO: - dependency injection
 
     override func loadView() {
+        super.loadView()
         view = searchView
     }
 
@@ -40,8 +41,10 @@ extension SearchViewController: UITableViewDataSource {
 
 extension SearchViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        searchView.searchBar.resignFirstResponder()
-        debugPrint(indexPath.row)
+        let model = viewModel.searchResults[indexPath.row]
+        let itemDetailViewModel = ItemDetailsViewModel(item: model)
+        let detailViewController = ItemDetailsViewViewController(viewModel: itemDetailViewModel)
+        navigationController?.pushViewController(detailViewController, animated: true)
     }
 }
 
