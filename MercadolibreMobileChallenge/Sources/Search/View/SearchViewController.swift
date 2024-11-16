@@ -24,6 +24,20 @@ class SearchViewController: UIViewController {
         searchView.tableView.delegate = self
         viewModel.delegate = self
     }
+
+    private func handleError(_ error: SearchError) {
+        switch error {
+        case .noResults:
+            searchView.noResultsView.text = "No results found"
+            searchView.noResultsView.isHidden = false
+        case .transportError:
+            searchView.noResultsView.text = "Transport error"
+            searchView.noResultsView.isHidden = false
+        case .serverError:
+            searchView.noResultsView.text = "Server error"
+            searchView.noResultsView.isHidden = false
+        }
+    }
 }
 
 extension SearchViewController: UITableViewDataSource {
@@ -57,6 +71,8 @@ extension SearchViewController: UISearchBarDelegate {
         searchView.isUserInteractionEnabled = false
         searchView.activityIndicatorView.startAnimating()
         searchView.activityIndicatorView.isHidden = false
+        searchView.noResultsView.isHidden = true
+        searchView.tableView.isHidden = false
         viewModel.search(query: hasText)
     }
 }
@@ -69,10 +85,11 @@ extension SearchViewController: SearchViewModelDelegate {
         searchView.isUserInteractionEnabled = true
     }
     
-    func didGetError() {
-        searchView.tableView.reloadData() // TODO: - error screen // retry button
+    func didGetError(error: SearchError) {
+        searchView.tableView.reloadData()
         searchView.activityIndicatorView.stopAnimating()
         searchView.activityIndicatorView.isHidden = true
         searchView.isUserInteractionEnabled = true
+        handleError(error)
     }
 }

@@ -7,9 +7,15 @@
 
 import Foundation
 
+enum SearchError {
+    case noResults
+    case transportError
+    case serverError
+}
+
 protocol SearchViewModelDelegate: AnyObject {
     func didGetSucessfulSearchResults()
-    func didGetError()
+    func didGetError(error: SearchError)
 }
 
 protocol SearchViewModelProtocol {
@@ -28,10 +34,20 @@ class SearchViewModel: SearchViewModelProtocol {
                 switch result {
                 case .success(let success):
                     self?.searchResults = success.results
+                    if success.results.isEmpty {
+                        self?.delegate?.didGetError(error: .noResults)
+                        return
+                    }
                     self?.delegate?.didGetSucessfulSearchResults()
-                case .failure(let failure):
-                    debugPrint(failure)
-                    self?.delegate?.didGetError()
+                case .failure(let error):
+                    self?.searchResults = []
+                    var searchError: SearchError
+                    if error == .transportError {
+                        searchError = .transportError
+                    } else {
+                        searchError = .serverError
+                    }
+                    self?.delegate?.didGetError(error: searchError)
                 }
             }
         }

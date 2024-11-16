@@ -20,13 +20,13 @@ class SearchService: SearchServiceProtocol {
         
         let task = URLSession.shared.dataTask(with: url) { data, response, error in
             if let hasError = error {
-                completion(.failure(.transportError(hasError)))
+                completion(.failure(.transportError))
                 return
             }
             
             if let hasResponse = response as? HTTPURLResponse,
                !(200...299).contains(hasResponse.statusCode) {
-                completion(.failure(.serverError(statusCode: hasResponse.statusCode)))
+                completion(.failure(.serverError))
                 return
             }
             
@@ -38,7 +38,7 @@ class SearchService: SearchServiceProtocol {
                 let result = try JSONDecoder().decode(SearchResult.self, from: hasData)
                 completion(.success(result))
             } catch {
-                completion(.failure(.decodingError(error)))
+                completion(.failure(.decodingError))
             }
         }
         task.resume()
@@ -47,8 +47,8 @@ class SearchService: SearchServiceProtocol {
 
 enum NetworkError: Error {
     case invalidUrl
-    case transportError(Error)
-    case serverError(statusCode: Int)
+    case transportError
+    case serverError
     case noData
-    case decodingError(Error)
+    case decodingError
 }

@@ -31,6 +31,15 @@ class SearchView: UIView {
         return tableView
     }()
 
+    lazy var noResultsView: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .center
+        label.isHidden = true
+        label.backgroundColor = .systemYellow
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         setup()
@@ -46,6 +55,7 @@ extension SearchView: ViewCode {
         addSubview(searchBar)
         addSubview(tableView)
         addSubview(activityIndicatorView)
+        addSubview(noResultsView)
     }
     
     func setupConstraints() {
@@ -53,14 +63,19 @@ extension SearchView: ViewCode {
             searchBar.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
             searchBar.leadingAnchor.constraint(equalTo: leadingAnchor),
             searchBar.trailingAnchor.constraint(equalTo: trailingAnchor),
+
             tableView.topAnchor.constraint(equalTo: searchBar.bottomAnchor),
             tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
+
             activityIndicatorView.topAnchor.constraint(equalTo: searchBar.bottomAnchor),
             activityIndicatorView.leadingAnchor.constraint(equalTo: leadingAnchor),
             activityIndicatorView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
-            activityIndicatorView.trailingAnchor.constraint(equalTo: trailingAnchor)
+            activityIndicatorView.trailingAnchor.constraint(equalTo: trailingAnchor),
+
+            noResultsView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            noResultsView.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
     }
     
