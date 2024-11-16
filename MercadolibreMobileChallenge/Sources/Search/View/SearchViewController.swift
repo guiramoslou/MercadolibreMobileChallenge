@@ -51,7 +51,7 @@ extension SearchViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: SearchResultCell.reuseIdentifier, for: indexPath) as? SearchResultCell
         let model = viewModel.searchResults[indexPath.row]
-        cell?.setup(imageUrl: model.thumbnail, title: model.title, price: String(model.price))
+        cell?.setup(imageUrl: model.thumbnail, title: model.title, price: model.price.formatted(.currency(code: "BRL")))
         return cell ?? UITableViewCell()
     }
 }

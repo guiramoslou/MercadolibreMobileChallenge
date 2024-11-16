@@ -15,20 +15,23 @@ class SearchResultCell: UITableViewCell {
         image.contentMode = .scaleAspectFill
         image.clipsToBounds = true
         image.translatesAutoresizingMaskIntoConstraints = false
-        image.backgroundColor = .systemRed // TODO: - remove after testing final layoutversion
-        image.layer.cornerRadius = 6
+        image.layer.cornerRadius = 8
         image.layer.masksToBounds = true
         return image
     }()
 
     lazy var title: UILabel = {
         let label = UILabel()
+        label.numberOfLines = 0
+        label.lineBreakMode = .byWordWrapping
+        label.font = .preferredFont(forTextStyle: .body)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
 
     lazy var price: UILabel = {
         let label = UILabel()
+        label.font = .preferredFont(forTextStyle: .headline)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -46,6 +49,7 @@ class SearchResultCell: UITableViewCell {
         self.image.load(url: imageUrl)
         self.title.text = title
         self.price.text = price
+        selectionStyle = .none
     }
 }
 
@@ -60,19 +64,21 @@ extension SearchResultCell: ViewCode {
         NSLayoutConstraint.activate([
             image.widthAnchor.constraint(equalToConstant: 64),
             image.heightAnchor.constraint(equalToConstant: 64),
-            image.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             image.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
-            title.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            image.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+
+            title.leadingAnchor.constraint(equalTo: image.trailingAnchor, constant: 8),
             title.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            title.topAnchor.constraint(equalTo: image.bottomAnchor, constant: 8),
-            price.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            price.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            title.topAnchor.constraint(equalTo: image.topAnchor),
+
+            price.leadingAnchor.constraint(equalTo: title.leadingAnchor),
+            price.trailingAnchor.constraint(equalTo: title.trailingAnchor),
             price.topAnchor.constraint(equalTo: title.bottomAnchor, constant: 8),
             price.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16)
         ])
     }
 
     func setupStyle() {
-        backgroundColor = .systemCyan // TODO: - remove after testing final layoutversion
+        backgroundColor = .white
     }
 }

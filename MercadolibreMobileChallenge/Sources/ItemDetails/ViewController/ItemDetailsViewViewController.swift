@@ -18,7 +18,7 @@ final class ItemDetailsViewViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        itemDetailsView.setupContent(imageUrl: viewModel.image, title: viewModel.title, attributes: viewModel.attributes)
+        itemDetailsView.setupContent(title: viewModel.title, imageUrl: viewModel.image, price: viewModel.price, attributes: viewModel.attributes)
     }
 
     init(viewModel: ItemDetailsViewModelProtocol) {

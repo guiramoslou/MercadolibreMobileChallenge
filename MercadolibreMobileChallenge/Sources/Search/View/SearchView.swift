@@ -10,8 +10,8 @@ import UIKit
 final class SearchView: UIView {
     private lazy var activityIndicatorView: UIActivityIndicatorView = {
         let activity = UIActivityIndicatorView()
-        activity.backgroundColor = .systemOrange // TODO: - remove after testing final layoutversion
-        activity.alpha = 0.5
+        activity.style = .large
+        activity.backgroundColor = .white
         activity.isHidden = true
         activity.translatesAutoresizingMaskIntoConstraints = false
         return activity
@@ -19,6 +19,8 @@ final class SearchView: UIView {
 
     private lazy var searchBar: UISearchBar = {
         let searchBar = UISearchBar()
+        searchBar.searchBarStyle = .minimal
+        searchBar.placeholder = "Search for products"
         searchBar.translatesAutoresizingMaskIntoConstraints = false
         return searchBar
     }()
@@ -26,7 +28,7 @@ final class SearchView: UIView {
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.register(SearchResultCell.self, forCellReuseIdentifier: SearchResultCell.reuseIdentifier)
-        tableView.backgroundColor = .systemMint // TODO: - remove after testing final layoutversion
+        tableView.separatorStyle = .none
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
     }()
@@ -35,7 +37,6 @@ final class SearchView: UIView {
         let label = UILabel()
         label.textAlignment = .center
         label.isHidden = true
-        label.backgroundColor = .systemYellow // TODO: - remove after testing final layoutversion
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -107,6 +108,6 @@ extension SearchView: ViewCode {
     }
     
     func setupStyle() {
-        backgroundColor = .systemPink // TODO: - remove after testing final layoutversion
+        backgroundColor = .white
     }
 }
