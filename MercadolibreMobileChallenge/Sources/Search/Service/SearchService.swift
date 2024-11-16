@@ -8,34 +8,47 @@
 import Foundation
 
 protocol SearchServiceProtocol {
-    func getResultFor(_ query: String, completionHandler: @escaping (Result<SearchResult, SearchError>) -> Void)
+    func getResultFor(_ query: String, completion: @escaping (Result<SearchResult, NetworkError>) -> Void)
 }
 
 class SearchService: SearchServiceProtocol {
-    func getResultFor(_ query: String, completionHandler: @escaping (Result<SearchResult, SearchError>) -> Void) {
+    func getResultFor(_ query: String, completion: @escaping (Result<SearchResult, NetworkError>) -> Void) {
         guard let url = URL(string: "https://api.mercadolibre.com/sites/MLB/search?q=\(query)") else {
-            completionHandler(.failure(.invalidUrl))
+            completion(.failure(.invalidUrl))
             return
         }
         
         let task = URLSession.shared.dataTask(with: url) { data, response, error in
+            if let hasError = error {
+                completion(.failure(.transportError(hasError)))
+                return
+            }
+            
+            if let hasResponse = response as? HTTPURLResponse,
+               !(200...299).contains(hasResponse.statusCode) {
+                completion(.failure(.serverError(statusCode: hasResponse.statusCode)))
+                return
+            }
+            
             guard let hasData = data else {
-                completionHandler(.failure(.noData))
+                completion(.failure(.noData))
                 return
             }
             do {
                 let result = try JSONDecoder().decode(SearchResult.self, from: hasData)
-                completionHandler(.success(result))
+                completion(.success(result))
             } catch {
-                completionHandler(.failure(.decodingError))
+                completion(.failure(.decodingError(error)))
             }
         }
         task.resume()
     }
 }
 
-enum SearchError: Error {
+enum NetworkError: Error {
     case invalidUrl
+    case transportError(Error)
+    case serverError(statusCode: Int)
     case noData
-    case decodingError
+    case decodingError(Error)
 }
