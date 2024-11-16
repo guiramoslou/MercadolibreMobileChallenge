@@ -88,7 +88,7 @@ final class SearchViewModelTests: XCTestCase {
 }
 
 extension SearchViewModelTests: SearchViewModelDelegate {
-    func didGetSucessfulSearchResults() {
+    func didGetSuccessfulSearchResults() {
         successDelegateCalled += 1
         testSearchSuccessExpectation.fulfill()
     }

@@ -30,16 +30,16 @@ final class SearchViewController: UIViewController {
     }
 
     private func handleError(_ error: SearchError) {
-        var errorMessage = "Generic Error"
+        var errorMessage = "Generic Error" // TODO: - implement localizable
         switch error {
         case .noResults:
-            errorMessage = "No results found"
+            errorMessage = "No results found" // TODO: - implement localizable
         case .transportError:
-            errorMessage = "Transport error"
+            errorMessage = "Transport error" // TODO: - implement localizable
         case .serverError:
-            errorMessage = "Server error"
+            errorMessage = "Server error" // TODO: - implement localizable
         }
-        searchView.showError(errorMessage: errorMessage)
+        searchView.showError(errorMessage)
     }
 }
 
@@ -51,7 +51,7 @@ extension SearchViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: SearchResultCell.reuseIdentifier, for: indexPath) as? SearchResultCell
         let model = viewModel.searchResults[indexPath.row]
-        cell?.setup(imageUrl: model.thumbnail, title: model.title, price: model.price.formatted(.currency(code: "BRL")))
+        cell?.setup(imageUrl: model.imageUrl, title: model.title, price: model.price.formatted(.currency(code: "BRL"))) // TODO: - implement localizable
         return cell ?? UITableViewCell()
     }
 }
@@ -61,7 +61,7 @@ extension SearchViewController: UITableViewDelegate {
         let model = viewModel.searchResults[indexPath.row]
         let itemDetailViewModel = ItemDetailsViewModel(item: model)
         let itemDetailViewController = ItemDetailsViewViewController(viewModel: itemDetailViewModel)
-        navigationController?.pushViewController(itemDetailViewController, animated: true)
+        navigationController?.pushViewController(itemDetailViewController, animated: true) // TODO: - implement coordinator
     }
 }
 
@@ -77,11 +77,11 @@ extension SearchViewController: UISearchBarDelegate {
 }
 
 extension SearchViewController: SearchViewModelDelegate {
-    func didGetSucessfulSearchResults() {
+    func didGetSuccessfulSearchResults() {
         searchView.stopLoading()
     }
 
-    func didGetError(error: SearchError) {
+    func didGetError(_ error: SearchError) {
         searchView.stopLoading()
         handleError(error)
     }

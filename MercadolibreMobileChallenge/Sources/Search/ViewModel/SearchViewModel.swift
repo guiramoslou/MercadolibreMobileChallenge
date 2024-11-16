@@ -14,8 +14,8 @@ enum SearchError {
 }
 
 protocol SearchViewModelDelegate: AnyObject {
-    func didGetSucessfulSearchResults()
-    func didGetError(error: SearchError)
+    func didGetSuccessfulSearchResults()
+    func didGetError(_ error: SearchError)
 }
 
 protocol SearchViewModelProtocol {
@@ -36,25 +36,25 @@ final class SearchViewModel: SearchViewModelProtocol {
         service.getResultFor(query) { result in
             DispatchQueue.main.async { [weak self] in
                 switch result {
-                case .success(let success):
-                    self?.handleSuccess(success)
+                case .success(let successfulResult):
+                    self?.handleResult(successfulResult)
                 case .failure(let error):
-                    self?.handleFaileure(error)
+                    self?.handleError(error)
                 }
             }
         }
     }
     
-    private func handleSuccess(_ success: SearchResult) {
-        searchResults = success.results
-        if success.results.isEmpty {
-            delegate?.didGetError(error: .noResults)
+    private func handleResult(_ result: SearchResult) {
+        searchResults = result.items
+        if result.items.isEmpty {
+            delegate?.didGetError(.noResults)
             return
         }
-        delegate?.didGetSucessfulSearchResults()
+        delegate?.didGetSuccessfulSearchResults()
     }
     
-    private func handleFaileure(_ error: NetworkError) {
+    private func handleError(_ error: NetworkError) {
         searchResults = []
         var searchError: SearchError
         if error == .transportError {
@@ -62,6 +62,6 @@ final class SearchViewModel: SearchViewModelProtocol {
         } else {
             searchError = .serverError
         }
-        delegate?.didGetError(error: searchError)
+        delegate?.didGetError(searchError)
     }
 }

@@ -22,8 +22,8 @@ final class ItemDetailsViewModel: ItemDetailsViewModelProtocol {
 
     init(item: Item) {
         self.title = item.title
-        self.image = item.thumbnail
-        self.price = item.price.formatted(.currency(code: "BRL"))
+        self.image = item.imageUrl
+        self.price = item.price.formatted(.currency(code: "BRL")) // TODO: - implement localizable
         self.attributes = item.attributes ?? []
     }
 }

@@ -21,32 +21,32 @@ final class ItemDetailsView: UIView {
     }()
 
     private lazy var title: UILabel = {
-        let title = UILabel()
-        title.numberOfLines = 0
-        title.lineBreakMode = .byWordWrapping
-        title.font = .preferredFont(forTextStyle: .body)
-        title.translatesAutoresizingMaskIntoConstraints = false
-        return title
+        let label = UILabel()
+        label.numberOfLines = 0
+        label.lineBreakMode = .byWordWrapping
+        label.font = .preferredFont(forTextStyle: .body)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
     }()
 
     private lazy var image: UIImageView = {
-        let image = UIImageView()
-        image.contentMode = .scaleAspectFill
-        image.clipsToBounds = true
-        image.translatesAutoresizingMaskIntoConstraints = false
-        image.layer.cornerRadius = 8
-        image.layer.masksToBounds = true
-        image.translatesAutoresizingMaskIntoConstraints = false
-        return image
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.layer.cornerRadius = 8
+        imageView.layer.masksToBounds = true
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
     }()
 
     private lazy var price: UILabel = {
-        let price = UILabel()
-        price.numberOfLines = 0
-        price.lineBreakMode = .byWordWrapping
-        price.font = .preferredFont(forTextStyle: .headline)
-        price.translatesAutoresizingMaskIntoConstraints = false
-        return price
+        let label = UILabel()
+        label.numberOfLines = 0
+        label.lineBreakMode = .byWordWrapping
+        label.font = .preferredFont(forTextStyle: .headline)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
     }()
 
     private lazy var attributes: UIStackView = {
@@ -60,7 +60,7 @@ final class ItemDetailsView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setup()
+        setupViewCode()
     }
 
     required init?(coder: NSCoder) {
@@ -72,8 +72,8 @@ final class ItemDetailsView: UIView {
         self.image.load(url: imageUrl)
         self.price.text = price
         for attribute in attributes {
-            guard let name = attribute.name,
-                  let value = attribute.value_name else { continue }
+            guard let name = attribute.keyName,
+                  let value = attribute.valueName else { continue }
             let label = setupAttributeLabel(name, value)
             self.attributes.addArrangedSubview(label)
         }

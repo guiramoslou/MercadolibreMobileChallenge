@@ -20,7 +20,7 @@ final class SearchView: UIView {
     private lazy var searchBar: UISearchBar = {
         let searchBar = UISearchBar()
         searchBar.searchBarStyle = .minimal
-        searchBar.placeholder = "Search for products"
+        searchBar.placeholder = "Search for products" // TODO: - implement localizable
         searchBar.translatesAutoresizingMaskIntoConstraints = false
         return searchBar
     }()
@@ -36,6 +36,9 @@ final class SearchView: UIView {
     private lazy var noResultsView: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
+        label.numberOfLines = 0
+        label.lineBreakMode = .byWordWrapping
+        label.font = .preferredFont(forTextStyle: .body)
         label.isHidden = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -51,7 +54,7 @@ final class SearchView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setup()
+        setupViewCode()
     }
 
     required init?(coder: NSCoder) {
@@ -72,8 +75,8 @@ final class SearchView: UIView {
         isUserInteractionEnabled = true
     }
 
-    func showError(errorMessage: String) {
-        noResultsView.text = errorMessage
+    func showError(_ message: String) {
+        noResultsView.text = message
         noResultsView.isHidden = false
     }
 }

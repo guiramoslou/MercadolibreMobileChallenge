@@ -31,6 +31,8 @@ class SearchResultCell: UITableViewCell {
 
     lazy var price: UILabel = {
         let label = UILabel()
+        label.numberOfLines = 0
+        label.lineBreakMode = .byWordWrapping
         label.font = .preferredFont(forTextStyle: .headline)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -38,7 +40,7 @@ class SearchResultCell: UITableViewCell {
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setup()
+        setupViewCode()
     }
 
     required init?(coder: NSCoder) {

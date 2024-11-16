@@ -12,7 +12,7 @@ protocol ViewCode {
 }
 
 extension ViewCode {
-    func setup() {
+    func setupViewCode() {
         addSubviews()
         setupConstraints()
         setupStyle()
