@@ -7,36 +7,39 @@
 
 import UIKit
 
-class SearchViewController: UIViewController {
+final class SearchViewController: UIViewController {
 
     private let searchView = SearchView(frame: UIScreen.main.bounds)
-    private let viewModel = SearchViewModel() // TODO: - dependency injection
+    private let viewModel: SearchViewModelProtocol
 
+    init(viewModel: SearchViewModelProtocol) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+        searchView.setupDelegates(searchBarDelegate: self,
+                                  tableviewDelegate: self,
+                                  tableViewDataSource: self)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func loadView() {
         super.loadView()
         view = searchView
     }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        searchView.searchBar.delegate = self
-        searchView.tableView.dataSource = self
-        searchView.tableView.delegate = self
-        viewModel.delegate = self
-    }
-
     private func handleError(_ error: SearchError) {
+        var errorMessage = "Generic Error"
         switch error {
         case .noResults:
-            searchView.noResultsView.text = "No results found"
-            searchView.noResultsView.isHidden = false
+            errorMessage = "No results found"
         case .transportError:
-            searchView.noResultsView.text = "Transport error"
-            searchView.noResultsView.isHidden = false
+            errorMessage = "Transport error"
         case .serverError:
-            searchView.noResultsView.text = "Server error"
-            searchView.noResultsView.isHidden = false
+            errorMessage = "Server error"
         }
+        searchView.showError(errorMessage: errorMessage)
     }
 }
 
@@ -57,8 +60,8 @@ extension SearchViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let model = viewModel.searchResults[indexPath.row]
         let itemDetailViewModel = ItemDetailsViewModel(item: model)
-        let detailViewController = ItemDetailsViewViewController(viewModel: itemDetailViewModel)
-        navigationController?.pushViewController(detailViewController, animated: true)
+        let itemDetailViewController = ItemDetailsViewViewController(viewModel: itemDetailViewModel)
+        navigationController?.pushViewController(itemDetailViewController, animated: true)
     }
 }
 
@@ -68,28 +71,18 @@ extension SearchViewController: UISearchBarDelegate {
         guard let hasText = searchBar.text else {
             return
         }
-        searchView.isUserInteractionEnabled = false
-        searchView.activityIndicatorView.startAnimating()
-        searchView.activityIndicatorView.isHidden = false
-        searchView.noResultsView.isHidden = true
-        searchView.tableView.isHidden = false
+        searchView.startLoading()
         viewModel.search(query: hasText)
     }
 }
 
 extension SearchViewController: SearchViewModelDelegate {
     func didGetSucessfulSearchResults() {
-        searchView.tableView.reloadData()
-        searchView.activityIndicatorView.stopAnimating()
-        searchView.activityIndicatorView.isHidden = true
-        searchView.isUserInteractionEnabled = true
+        searchView.stopLoading()
     }
-    
+
     func didGetError(error: SearchError) {
-        searchView.tableView.reloadData()
-        searchView.activityIndicatorView.stopAnimating()
-        searchView.activityIndicatorView.isHidden = true
-        searchView.isUserInteractionEnabled = true
+        searchView.stopLoading()
         handleError(error)
     }
 }

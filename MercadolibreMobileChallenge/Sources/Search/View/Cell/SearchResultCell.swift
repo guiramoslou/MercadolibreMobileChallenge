@@ -15,7 +15,7 @@ class SearchResultCell: UITableViewCell {
         image.contentMode = .scaleAspectFill
         image.clipsToBounds = true
         image.translatesAutoresizingMaskIntoConstraints = false
-        image.backgroundColor = .systemRed
+        image.backgroundColor = .systemRed // TODO: - remove after testing final layoutversion
         image.layer.cornerRadius = 6
         image.layer.masksToBounds = true
         return image
@@ -42,7 +42,7 @@ class SearchResultCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func setup(imageUrl: URL, title: String, price: String) {
+    func setup(imageUrl: URL?, title: String, price: String) {
         self.image.load(url: imageUrl)
         self.title.text = title
         self.price.text = price
@@ -73,6 +73,6 @@ extension SearchResultCell: ViewCode {
     }
 
     func setupStyle() {
-        backgroundColor = .systemCyan
+        backgroundColor = .systemCyan // TODO: - remove after testing final layoutversion
     }
 }

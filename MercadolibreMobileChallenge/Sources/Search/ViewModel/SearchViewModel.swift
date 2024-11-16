@@ -20,36 +20,48 @@ protocol SearchViewModelDelegate: AnyObject {
 
 protocol SearchViewModelProtocol {
     var searchResults: [Item] { get }
-    var delegate: SearchViewModelDelegate? { get set }
     func search(query: String)
 }
 
-class SearchViewModel: SearchViewModelProtocol {
+final class SearchViewModel: SearchViewModelProtocol {
+    private let service: SearchServiceProtocol
     var searchResults: [Item] = []
-    weak var delegate: SearchViewModelDelegate?
+    weak var delegate: SearchViewModelDelegate? // TODO: - switch from delegate to observable
+    
+    init(service: SearchServiceProtocol) {
+        self.service = service
+    }
     
     func search(query: String) {
-        SearchService().getResultFor(query) { [weak self] result in
-            DispatchQueue.main.async {
+        service.getResultFor(query) { result in
+            DispatchQueue.main.async { [weak self] in
                 switch result {
                 case .success(let success):
-                    self?.searchResults = success.results
-                    if success.results.isEmpty {
-                        self?.delegate?.didGetError(error: .noResults)
-                        return
-                    }
-                    self?.delegate?.didGetSucessfulSearchResults()
+                    self?.handleSuccess(success)
                 case .failure(let error):
-                    self?.searchResults = []
-                    var searchError: SearchError
-                    if error == .transportError {
-                        searchError = .transportError
-                    } else {
-                        searchError = .serverError
-                    }
-                    self?.delegate?.didGetError(error: searchError)
+                    self?.handleFaileure(error)
                 }
             }
         }
+    }
+    
+    private func handleSuccess(_ success: SearchResult) {
+        searchResults = success.results
+        if success.results.isEmpty {
+            delegate?.didGetError(error: .noResults)
+            return
+        }
+        delegate?.didGetSucessfulSearchResults()
+    }
+    
+    private func handleFaileure(_ error: NetworkError) {
+        searchResults = []
+        var searchError: SearchError
+        if error == .transportError {
+            searchError = .transportError
+        } else {
+            searchError = .serverError
+        }
+        delegate?.didGetError(error: searchError)
     }
 }

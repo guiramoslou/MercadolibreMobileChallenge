@@ -7,11 +7,19 @@
 
 import Foundation
 
+enum NetworkError: Error {
+    case invalidUrl
+    case transportError
+    case serverError
+    case noData
+    case decodingError
+}
+
 protocol SearchServiceProtocol {
     func getResultFor(_ query: String, completion: @escaping (Result<SearchResult, NetworkError>) -> Void)
 }
 
-class SearchService: SearchServiceProtocol {
+final class SearchService: SearchServiceProtocol {
     func getResultFor(_ query: String, completion: @escaping (Result<SearchResult, NetworkError>) -> Void) {
         guard let url = URL(string: "https://api.mercadolibre.com/sites/MLB/search?q=\(query)") else {
             completion(.failure(.invalidUrl))
@@ -43,12 +51,4 @@ class SearchService: SearchServiceProtocol {
         }
         task.resume()
     }
-}
-
-enum NetworkError: Error {
-    case invalidUrl
-    case transportError
-    case serverError
-    case noData
-    case decodingError
 }

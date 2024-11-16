@@ -7,38 +7,38 @@
 
 import UIKit
 
-class ItemDetailsView: UIView {
-    lazy var scrollView: UIScrollView = {
+final class ItemDetailsView: UIView {
+    private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         return scrollView
     }()
     
-    lazy var contentView: UIView = {
+    private lazy var contentView: UIView = {
         let contentView = UIView()
         contentView.translatesAutoresizingMaskIntoConstraints = false
         return contentView
     }()
 
-    lazy var image: UIImageView = {
+    private lazy var image: UIImageView = {
         let image = UIImageView()
         image.contentMode = .scaleAspectFill
         image.clipsToBounds = true
         image.translatesAutoresizingMaskIntoConstraints = false
-        image.backgroundColor = .systemRed
+        image.backgroundColor = .systemRed // TODO: - remove after testing final layoutversion
         image.layer.cornerRadius = 6
         image.layer.masksToBounds = true
         image.translatesAutoresizingMaskIntoConstraints = false
         return image
     }()
 
-    lazy var title: UILabel = {
+    private lazy var title: UILabel = {
         let title = UILabel()
         title.translatesAutoresizingMaskIntoConstraints = false
         return title
     }()
 
-    lazy var attributes: UIStackView = {
+    private lazy var attributes: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.distribution = .fillEqually
@@ -56,7 +56,7 @@ class ItemDetailsView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func setup(imageUrl: URL, title: String, attributes: [Attribute]) {
+    func setupContent(imageUrl: URL?, title: String, attributes: [Attribute]) {
         self.image.load(url: imageUrl)
         self.title.text = title
         for attribute in attributes {
@@ -92,14 +92,15 @@ extension ItemDetailsView: ViewCode {
             contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
             contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             
-            
             title.topAnchor.constraint(equalTo: contentView.topAnchor),
             title.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             title.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+
             image.topAnchor.constraint(equalTo: title.bottomAnchor, constant: 16),
             image.widthAnchor.constraint(equalToConstant: 128),
             image.heightAnchor.constraint(equalToConstant: 128),
             image.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+
             attributes.topAnchor.constraint(equalTo: image.bottomAnchor, constant: 16),
             attributes.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             attributes.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
@@ -108,6 +109,6 @@ extension ItemDetailsView: ViewCode {
     }
 
     func setupStyle() {
-        backgroundColor = .systemIndigo
+        backgroundColor = .systemIndigo // TODO: - remove after testing final layoutversion
     }
 }

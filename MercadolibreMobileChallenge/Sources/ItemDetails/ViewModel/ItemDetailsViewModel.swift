@@ -8,13 +8,13 @@
 import Foundation
 
 protocol ItemDetailsViewModelProtocol {
-    var image: URL { get }
+    var image: URL? { get }
     var title: String { get }
     var attributes: [Attribute] { get }
 }
 
-class ItemDetailsViewModel: ItemDetailsViewModelProtocol {
-    let image: URL
+final class ItemDetailsViewModel: ItemDetailsViewModelProtocol {
+    let image: URL?
     let title: String
     let attributes: [Attribute]
     

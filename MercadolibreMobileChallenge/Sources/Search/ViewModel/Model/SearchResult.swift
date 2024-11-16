@@ -16,7 +16,7 @@ struct SearchResult: Decodable {
 
 struct Item: Decodable {
     let title: String
-    let thumbnail: URL
+    let thumbnail: URL?
     let price: Double
     let attributes: [Attribute]?
 }
