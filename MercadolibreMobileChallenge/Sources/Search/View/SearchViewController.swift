@@ -30,14 +30,14 @@ final class SearchViewController: UIViewController {
     }
 
     private func handleError(_ error: SearchError) {
-        var errorMessage = "Generic Error" // TODO: - implement localizable
+        var errorMessage = "Something Went Wrong.\nWe encountered an issue. Please try again later." // TODO: - implement localizable
         switch error {
         case .noResults:
-            errorMessage = "No results found" // TODO: - implement localizable
+            errorMessage = "No Results Found.\nWe couldn’t find any matches for your search. Please check your search terms or try using different keywords." // TODO: - implement localizable
         case .transportError:
-            errorMessage = "Transport error" // TODO: - implement localizable
+            errorMessage = "Connection Lost.\nWe’re having trouble connecting to the internet. Please check your connection and try again." // TODO: - implement localizable
         case .serverError:
-            errorMessage = "Server error" // TODO: - implement localizable
+            errorMessage = "Something Went Wrong\nThere was an issue connecting to the server. Please try again later. If the problem persists, please contact support." // TODO: - implement localizable
         }
         searchView.showError(errorMessage)
     }
