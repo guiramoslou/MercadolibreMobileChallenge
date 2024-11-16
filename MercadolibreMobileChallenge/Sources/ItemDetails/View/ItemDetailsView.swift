@@ -8,6 +8,18 @@
 import UIKit
 
 class ItemDetailsView: UIView {
+    lazy var scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        return scrollView
+    }()
+    
+    lazy var contentView: UIView = {
+        let contentView = UIView()
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+        return contentView
+    }()
+
     lazy var image: UIImageView = {
         let image = UIImageView()
         image.contentMode = .scaleAspectFill
@@ -59,23 +71,39 @@ class ItemDetailsView: UIView {
 
 extension ItemDetailsView: ViewCode {
     func addSubviews() {
-        addSubview(title)
-        addSubview(image)
-        addSubview(attributes)
+        addSubview(scrollView)
+        scrollView.addSubview(contentView)
+        contentView.addSubview(title)
+        contentView.addSubview(image)
+        contentView.addSubview(attributes)
     }
 
     func setupConstraints() {
+        
         NSLayoutConstraint.activate([
-            title.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
-            title.leadingAnchor.constraint(equalTo: leadingAnchor),
-            title.trailingAnchor.constraint(equalTo: trailingAnchor),
+            scrollView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
+            scrollView.widthAnchor.constraint(equalTo: contentView.widthAnchor),
+
+            contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            
+            
+            title.topAnchor.constraint(equalTo: contentView.topAnchor),
+            title.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            title.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             image.topAnchor.constraint(equalTo: title.bottomAnchor, constant: 16),
             image.widthAnchor.constraint(equalToConstant: 128),
             image.heightAnchor.constraint(equalToConstant: 128),
-            image.centerXAnchor.constraint(equalTo: centerXAnchor),
+            image.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             attributes.topAnchor.constraint(equalTo: image.bottomAnchor, constant: 16),
-            attributes.leadingAnchor.constraint(equalTo: leadingAnchor),
-            attributes.trailingAnchor.constraint(equalTo: trailingAnchor)
+            attributes.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            attributes.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            attributes.bottomAnchor.constraint(greaterThanOrEqualTo: contentView.bottomAnchor)
         ])
     }
 
