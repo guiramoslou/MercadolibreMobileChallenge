@@ -19,8 +19,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let searchService = SearchService()
         let searchViewModel = SearchViewModel(service: searchService)
         let searchViewController = SearchViewController(viewModel: searchViewModel)
-        searchViewModel.delegate = searchViewController // TODO: - switch from delegate to observable
-        let navigationController = UINavigationController(rootViewController: searchViewController) // TODO: - implement coordinator
+        searchViewModel.delegate = searchViewController
+        let navigationController = UINavigationController(rootViewController: searchViewController)
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
     }

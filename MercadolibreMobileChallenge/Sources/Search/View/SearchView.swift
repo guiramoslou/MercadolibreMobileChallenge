@@ -20,7 +20,7 @@ final class SearchView: UIView {
     private lazy var searchBar: UISearchBar = {
         let searchBar = UISearchBar()
         searchBar.searchBarStyle = .minimal
-        searchBar.placeholder = "Search for products" // TODO: - implement localizable
+        searchBar.placeholder = Localize.searchForProducts.localizedString()
         searchBar.translatesAutoresizingMaskIntoConstraints = false
         return searchBar
     }()

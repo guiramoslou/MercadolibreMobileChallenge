@@ -30,14 +30,14 @@ final class SearchViewController: UIViewController {
     }
 
     private func handleError(_ error: SearchError) {
-        var errorMessage = "Something Went Wrong.\nWe encountered an issue. Please try again later." // TODO: - implement localizable
+        var errorMessage = Localize.genericError.localizedString()
         switch error {
         case .noResults:
-            errorMessage = "No Results Found.\nWe couldn’t find any matches for your search. Please check your search terms or try using different keywords." // TODO: - implement localizable
+            errorMessage = Localize.noResultError.localizedString()
         case .transportError:
-            errorMessage = "Connection Lost.\nWe’re having trouble connecting to the internet. Please check your connection and try again." // TODO: - implement localizable
+            errorMessage = Localize.transportError.localizedString()
         case .serverError:
-            errorMessage = "Something Went Wrong\nThere was an issue connecting to the server. Please try again later. If the problem persists, please contact support." // TODO: - implement localizable
+            errorMessage = Localize.serverError.localizedString()
         }
         searchView.showError(errorMessage)
     }
@@ -51,7 +51,7 @@ extension SearchViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: SearchResultCell.reuseIdentifier, for: indexPath) as? SearchResultCell
         let model = viewModel.searchResults[indexPath.row]
-        cell?.setup(imageUrl: model.imageUrl, title: model.title, price: model.price.formatted(.currency(code: "BRL"))) // TODO: - implement localizable
+        cell?.setup(imageUrl: model.imageUrl, title: model.title, price: model.price.localizedCurrency())
         return cell ?? UITableViewCell()
     }
 }
@@ -61,7 +61,7 @@ extension SearchViewController: UITableViewDelegate {
         let model = viewModel.searchResults[indexPath.row]
         let itemDetailViewModel = ItemDetailsViewModel(item: model)
         let itemDetailViewController = ItemDetailsViewViewController(viewModel: itemDetailViewModel)
-        navigationController?.pushViewController(itemDetailViewController, animated: true) // TODO: - implement coordinator
+        navigationController?.pushViewController(itemDetailViewController, animated: true)
     }
 }
 

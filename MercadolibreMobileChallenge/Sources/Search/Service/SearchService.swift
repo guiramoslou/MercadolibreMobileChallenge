@@ -21,7 +21,7 @@ protocol SearchServiceProtocol {
 
 final class SearchService: SearchServiceProtocol {
     func getResultFor(_ query: String, completion: @escaping (Result<SearchResult, NetworkError>) -> Void) {
-        guard let url = URL(string: "https://api.mercadolibre.com/sites/MLB/search?q=\(query)") else { // TODO: - implement endpoint enum
+        guard let url = Endpoints.search(query: query).url else {
             completion(.failure(.invalidUrl))
             return
         }

@@ -1,0 +1,12 @@
+/* 
+  Localizable.strings
+  MercadolibreMobileChallenge
+
+  Created by Guilherme Lourenco on 17/11/24.
+  
+*/
+"searchForProducts" = "Buscar productos";
+"genericError" = "Algo salió mal.\nHemos detectado un problema. Inténtalo de nuevo más tarde.";
+"noResultError" = "No se encontraron resultados.\nNo pudimos encontrar ninguna coincidencia para su búsqueda. Verifique sus términos de búsqueda o intente usar otras palabras clave.";
+"transportError" = "Conexión perdida.\nTenemos problemas para conectarnos a Internet. Verifique su conexión e inténtelo nuevamente.";
+"serverError" = "Algo salió mal.\nHubo un problema al conectarse al servidor. Inténtelo nuevamente más tarde. Si el problema persiste, comuníquese con el soporte técnico.";

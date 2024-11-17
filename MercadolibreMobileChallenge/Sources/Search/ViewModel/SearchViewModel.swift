@@ -26,7 +26,7 @@ protocol SearchViewModelProtocol {
 final class SearchViewModel: SearchViewModelProtocol {
     private let service: SearchServiceProtocol
     var searchResults: [Item] = []
-    weak var delegate: SearchViewModelDelegate? // TODO: - switch from delegate to observable
+    weak var delegate: SearchViewModelDelegate?
     
     init(service: SearchServiceProtocol) {
         self.service = service
