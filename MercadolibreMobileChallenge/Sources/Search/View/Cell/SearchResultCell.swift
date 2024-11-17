@@ -7,10 +7,10 @@
 
 import UIKit
 
-class SearchResultCell: UITableViewCell {
+final class SearchResultCell: UITableViewCell {
     static let reuseIdentifier = "SearchResultCell"
 
-    lazy var image: UIImageView = {
+    private lazy var image: UIImageView = {
         let image = UIImageView()
         image.contentMode = .scaleAspectFill
         image.clipsToBounds = true
@@ -20,7 +20,7 @@ class SearchResultCell: UITableViewCell {
         return image
     }()
 
-    lazy var title: UILabel = {
+    private lazy var title: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
@@ -29,7 +29,7 @@ class SearchResultCell: UITableViewCell {
         return label
     }()
 
-    lazy var price: UILabel = {
+    private lazy var price: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping

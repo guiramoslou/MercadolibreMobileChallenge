@@ -60,7 +60,7 @@ extension SearchViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let model = viewModel.searchResults[indexPath.row]
         let itemDetailViewModel = ItemDetailsViewModel(item: model)
-        let itemDetailViewController = ItemDetailsViewViewController(viewModel: itemDetailViewModel)
+        let itemDetailViewController = ItemDetailsViewController(viewModel: itemDetailViewModel)
         navigationController?.pushViewController(itemDetailViewController, animated: true)
     }
 }

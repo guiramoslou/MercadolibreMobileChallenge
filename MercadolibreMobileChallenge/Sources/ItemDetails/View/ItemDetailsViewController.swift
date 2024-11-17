@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class ItemDetailsViewViewController: UIViewController {
+final class ItemDetailsViewController: UIViewController {
     private let itemDetailsView = ItemDetailsView(frame: UIScreen.main.bounds)
     private let viewModel: ItemDetailsViewModelProtocol
 
@@ -18,7 +18,7 @@ final class ItemDetailsViewViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        itemDetailsView.setupContent(title: viewModel.title, imageUrl: viewModel.image, price: viewModel.price, attributes: viewModel.attributes)
+        itemDetailsView.setupContent(title: viewModel.title, imageUrl: viewModel.imageUrl, price: viewModel.price, attributes: viewModel.attributes)
     }
 
     init(viewModel: ItemDetailsViewModelProtocol) {

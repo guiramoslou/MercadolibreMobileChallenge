@@ -34,13 +34,11 @@ final class SearchViewModelTests: XCTestCase {
     }
     
     func testSearchSuccess() {
-        spy.setup(result: SearchResult(site_id: String(),
-                                       country_default_time_zone: String(),
-                                       query: String(),
-                                       results: [Item(title: String(),
-                                                      thumbnail: nil,
-                                                      price: Double(),
-                                                      attributes: nil)]))
+        spy.setup(result: SearchResult(query: String(),
+                                       items: [Item(title: String(),
+                                                    imageUrl: nil,
+                                                    price: Double(),
+                                                    attributes: nil)]))
         let query = "test query"
         sut.search(query: query)
         XCTAssertEqual(spy.didCallGetResult, 1)
@@ -51,10 +49,8 @@ final class SearchViewModelTests: XCTestCase {
     }
 
     func testSearchEmptyResult() {
-        spy.setup( result: SearchResult(site_id: String(),
-                                        country_default_time_zone: String(),
-                                        query: String(),
-                                        results: []))
+        spy.setup(result: SearchResult(query: String(),
+                                       items: []))
         let query = "test query"
         sut.search(query: query)
         XCTAssertEqual(spy.didCallGetResult, 1)
@@ -93,7 +89,7 @@ extension SearchViewModelTests: SearchViewModelDelegate {
         testSearchSuccessExpectation.fulfill()
     }
     
-    func didGetError(error: SearchError) {
+    func didGetError(_ error: SearchError) {
         errorReturned = error
         testSearchFailureExpectation.fulfill()
     }

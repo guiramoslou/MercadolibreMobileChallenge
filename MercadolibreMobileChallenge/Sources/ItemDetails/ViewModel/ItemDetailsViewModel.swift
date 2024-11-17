@@ -9,20 +9,20 @@ import Foundation
 
 protocol ItemDetailsViewModelProtocol {
     var title: String { get }
-    var image: URL? { get }
+    var imageUrl: URL? { get }
     var price: String { get }
     var attributes: [Attribute] { get }
 }
 
 final class ItemDetailsViewModel: ItemDetailsViewModelProtocol {
     let title: String
-    let image: URL?
+    let imageUrl: URL?
     let price: String
     let attributes: [Attribute]
 
     init(item: Item) {
         self.title = item.title
-        self.image = item.imageUrl
+        self.imageUrl = item.imageUrl
         self.price = item.price.localizedCurrency()
         self.attributes = item.attributes ?? []
     }
