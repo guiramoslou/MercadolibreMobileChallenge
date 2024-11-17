@@ -10,12 +10,17 @@ import Foundation
 import MercadolibreMobileChallenge
 
 final class SearchServiceSpy: SearchServiceProtocol {
+    var networkProvider: NetworkProviderProtocol
     var didCallGetResult = 0
     var getResultValue = String()
-    var error: NetworkError? = nil
+    var error: SearchError? = nil
     var result: SearchResult? = nil
 
-    func getResultFor(_ query: String, completion: @escaping (Result<SearchResult, NetworkError>) -> Void) {
+    init(networkProvider: NetworkProviderProtocol = NetworkProviderSpy()) {
+        self.networkProvider = networkProvider
+    }
+
+    func getResultFor(_ query: String, completion: @escaping (Result<SearchResult, SearchError>) -> Void) {
         didCallGetResult += 1
         getResultValue = query
         if let hasError = error {
@@ -23,13 +28,13 @@ final class SearchServiceSpy: SearchServiceProtocol {
             return
         }
         guard let hasResult = result else {
-            completion(.failure(.noData))
+            completion(.failure(.serverError))
             return
         }
         completion(.success(hasResult))
     }
 
-    func setup(error: NetworkError? = nil, result: SearchResult? = nil) {
+    func setup(error: SearchError? = nil, result: SearchResult? = nil) {
         self.error = error
         self.result = result
     }

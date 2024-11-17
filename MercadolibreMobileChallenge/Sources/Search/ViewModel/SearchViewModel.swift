@@ -7,12 +7,6 @@
 
 import Foundation
 
-enum SearchError {
-    case noResults
-    case transportError
-    case serverError
-}
-
 protocol SearchViewModelDelegate: AnyObject {
     func didGetSuccessfulSearchResults()
     func didGetError(_ error: SearchError)
@@ -54,14 +48,8 @@ final class SearchViewModel: SearchViewModelProtocol {
         delegate?.didGetSuccessfulSearchResults()
     }
     
-    private func handleError(_ error: NetworkError) {
+    private func handleError(_ error: SearchError) {
         searchResults = []
-        var searchError: SearchError
-        if error == .transportError {
-            searchError = .transportError
-        } else {
-            searchError = .serverError
-        }
-        delegate?.didGetError(searchError)
+        delegate?.didGetError(error)
     }
 }

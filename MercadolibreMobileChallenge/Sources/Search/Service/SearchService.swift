@@ -7,26 +7,31 @@
 
 import Foundation
 
-enum NetworkError: Error {
-    case invalidUrl
+enum SearchError: Error {
+    case noResults
     case transportError
     case serverError
-    case noData
-    case decodingError
 }
 
 protocol SearchServiceProtocol {
-    func getResultFor(_ query: String, completion: @escaping (Result<SearchResult, NetworkError>) -> Void)
+    var networkProvider: NetworkProviderProtocol { get }
+    func getResultFor(_ query: String, completion: @escaping (Result<SearchResult, SearchError>) -> Void)
 }
 
 final class SearchService: SearchServiceProtocol {
-    func getResultFor(_ query: String, completion: @escaping (Result<SearchResult, NetworkError>) -> Void) {
+    let networkProvider: NetworkProviderProtocol
+
+    init(networkProvider: NetworkProviderProtocol = NetworkProvider.shared) {
+        self.networkProvider = networkProvider
+    }
+
+    func getResultFor(_ query: String, completion: @escaping (Result<SearchResult, SearchError>) -> Void) {
         guard let url = Endpoints.search(query: query).url else {
-            completion(.failure(.invalidUrl))
+            completion(.failure(.serverError))
             return
         }
         
-        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+        networkProvider.makeApiCall(with: url) { data, response, error in
             if let _ = error {
                 completion(.failure(.transportError))
                 return
@@ -39,16 +44,15 @@ final class SearchService: SearchServiceProtocol {
             }
             
             guard let hasData = data else {
-                completion(.failure(.noData))
+                completion(.failure(.serverError))
                 return
             }
             do {
                 let result = try JSONDecoder().decode(SearchResult.self, from: hasData)
                 completion(.success(result))
             } catch {
-                completion(.failure(.decodingError))
+                completion(.failure(.serverError))
             }
         }
-        task.resume()
     }
 }
