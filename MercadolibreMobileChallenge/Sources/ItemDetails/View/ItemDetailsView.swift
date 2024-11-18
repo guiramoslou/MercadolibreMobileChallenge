@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol ItemDetailsViewProtocol: UIView {
+    func setupContent(title: String, imageUrl: URL?, price: String, attributes: [Attribute])
+}
+
 final class ItemDetailsView: UIView {
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -66,27 +70,6 @@ final class ItemDetailsView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
-    func setupContent(title: String, imageUrl: URL?, price: String, attributes: [Attribute]) {
-        self.title.text = title
-        self.image.load(url: imageUrl)
-        self.price.text = price
-        for attribute in attributes {
-            guard let name = attribute.keyName,
-                  let value = attribute.valueName else { continue }
-            let label = setupAttributeLabel(name, value)
-            self.attributes.addArrangedSubview(label)
-        }
-    }
-
-    private func setupAttributeLabel(_ name: String, _ value: String) -> UILabel {
-        let label = UILabel()
-        label.text = "\(name): \(value)"
-        label.numberOfLines = 0
-        label.lineBreakMode = .byWordWrapping
-        label.font = .preferredFont(forTextStyle: .callout)
-        return label
-    }
 }
 
 extension ItemDetailsView: ViewCode {
@@ -135,5 +118,28 @@ extension ItemDetailsView: ViewCode {
 
     func setupStyle() {
         backgroundColor = .white
+    }
+}
+
+extension ItemDetailsView: ItemDetailsViewProtocol {
+    func setupContent(title: String, imageUrl: URL?, price: String, attributes: [Attribute]) {
+        self.title.text = title
+        self.image.load(url: imageUrl)
+        self.price.text = price
+        for attribute in attributes {
+            guard let name = attribute.keyName,
+                  let value = attribute.valueName else { continue }
+            let label = setupAttributeLabel(name, value)
+            self.attributes.addArrangedSubview(label)
+        }
+    }
+    
+    private func setupAttributeLabel(_ name: String, _ value: String) -> UILabel {
+        let label = UILabel()
+        label.text = "\(name): \(value)"
+        label.numberOfLines = 0
+        label.lineBreakMode = .byWordWrapping
+        label.font = .preferredFont(forTextStyle: .callout)
+        return label
     }
 }

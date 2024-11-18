@@ -8,7 +8,7 @@
 import UIKit
 
 final class ItemDetailsViewController: UIViewController {
-    private let itemDetailsView = ItemDetailsView(frame: UIScreen.main.bounds)
+    private let itemDetailsView: ItemDetailsViewProtocol
     private let viewModel: ItemDetailsViewModelProtocol
 
     override func loadView() {
@@ -21,8 +21,9 @@ final class ItemDetailsViewController: UIViewController {
         itemDetailsView.setupContent(title: viewModel.title, imageUrl: viewModel.imageUrl, price: viewModel.price, attributes: viewModel.attributes)
     }
 
-    init(viewModel: ItemDetailsViewModelProtocol) {
+    init(viewModel: ItemDetailsViewModelProtocol, view: ItemDetailsViewProtocol = ItemDetailsView(frame: UIScreen.main.bounds)) {
         self.viewModel = viewModel
+        self.itemDetailsView = view
         super.init(nibName: nil, bundle: nil)
     }
     

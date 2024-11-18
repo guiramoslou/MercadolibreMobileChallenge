@@ -7,6 +7,13 @@
 
 import UIKit
 
+protocol SearchViewProtocol: UIView {
+    func setupDelegates(searchBarDelegate: UISearchBarDelegate, tableviewDelegate: UITableViewDelegate, tableViewDataSource: UITableViewDataSource)
+    func showError(_ message: String)
+    func startLoading()
+    func stopLoading()
+}
+
 final class SearchView: UIView {
     private lazy var activityIndicatorView: UIActivityIndicatorView = {
         let activity = UIActivityIndicatorView()
@@ -44,14 +51,6 @@ final class SearchView: UIView {
         return label
     }()
 
-    func setupDelegates(searchBarDelegate: UISearchBarDelegate,
-                        tableviewDelegate: UITableViewDelegate,
-                        tableViewDataSource: UITableViewDataSource) {
-        searchBar.delegate = searchBarDelegate
-        tableView.delegate = tableviewDelegate
-        tableView.dataSource = tableViewDataSource
-    }
-
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupViewCode()
@@ -59,25 +58,6 @@ final class SearchView: UIView {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-
-    func startLoading() {
-        isUserInteractionEnabled = false
-        activityIndicatorView.startAnimating()
-        activityIndicatorView.isHidden = false
-        noResultsView.isHidden = true
-    }
-
-    func stopLoading() {
-        tableView.reloadData()
-        activityIndicatorView.stopAnimating()
-        activityIndicatorView.isHidden = true
-        isUserInteractionEnabled = true
-    }
-
-    func showError(_ message: String) {
-        noResultsView.text = message
-        noResultsView.isHidden = false
     }
 }
 
@@ -114,5 +94,34 @@ extension SearchView: ViewCode {
     
     func setupStyle() {
         backgroundColor = .white
+    }
+}
+
+extension SearchView: SearchViewProtocol {
+    func setupDelegates(searchBarDelegate: UISearchBarDelegate,
+                        tableviewDelegate: UITableViewDelegate,
+                        tableViewDataSource: UITableViewDataSource) {
+        searchBar.delegate = searchBarDelegate
+        tableView.delegate = tableviewDelegate
+        tableView.dataSource = tableViewDataSource
+    }
+
+    func showError(_ message: String) {
+        noResultsView.text = message
+        noResultsView.isHidden = false
+    }
+
+    func startLoading() {
+        isUserInteractionEnabled = false
+        activityIndicatorView.startAnimating()
+        activityIndicatorView.isHidden = false
+        noResultsView.isHidden = true
+    }
+
+    func stopLoading() {
+        tableView.reloadData()
+        activityIndicatorView.stopAnimating()
+        activityIndicatorView.isHidden = true
+        isUserInteractionEnabled = true
     }
 }

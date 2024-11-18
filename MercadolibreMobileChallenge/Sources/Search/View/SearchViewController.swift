@@ -9,11 +9,12 @@ import UIKit
 
 final class SearchViewController: UIViewController {
 
-    private let searchView = SearchView(frame: UIScreen.main.bounds)
+    private let searchView: SearchViewProtocol
     private let viewModel: SearchViewModelProtocol
 
-    init(viewModel: SearchViewModelProtocol) {
+    init(viewModel: SearchViewModelProtocol, view: SearchViewProtocol = SearchView(frame: UIScreen.main.bounds)) {
         self.viewModel = viewModel
+        self.searchView = view
         super.init(nibName: nil, bundle: nil)
         searchView.setupDelegates(searchBarDelegate: self,
                                   tableviewDelegate: self,
